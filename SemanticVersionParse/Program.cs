@@ -26,41 +26,41 @@ var versions = new string[]
 
 
 versions
-.Select
-    (v => (SemanticVersion) NuGetVersion.Parse(v))
-.OrderBy
-    (
-        (x) =>
-        {
-            return x;
-        }
-    )
-.Zip
-    (
-        versions
-            .Select
-                (v => SemVersion.Parse(v, SemVersionStyles.Any))
-            .OrderBy
-                (
-                    (x) =>
-                    {
-                        return x;
-                    }
-                )
-        , (v1, v2) =>
+    .Select
+        (v => (SemanticVersion) NuGetVersion.Parse(v))
+    .OrderBy
+        (
+            (x) =>
             {
-                return (v1, v2);
+                return x;
             }
-    )
-.ForEach
-    (
-        (i, v) =>
-        {
-            var eq = v.v1.ToFullString () == v.v2.ToString ();
-            Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(eq ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
-            return false;
-        }
-    )
+        )
+    .Zip
+        (
+            versions
+                .Select
+                    (v => SemVersion.Parse(v, SemVersionStyles.Any))
+                .OrderBy
+                    (
+                        (x) =>
+                        {
+                            return x;
+                        }
+                    )
+            , (v1, v2) =>
+                {
+                    return (v1, v2);
+                }
+        )
+    .ForEach
+        (
+            (i, v) =>
+            {
+                var eq = v.v1.ToFullString () == v.v2.ToString ();
+                Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(eq ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
+                return false;
+            }
+        )
 ;
 
 Console.ReadLine();
