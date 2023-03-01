@@ -55,8 +55,8 @@ versions
         (
             (i, v) =>
             {
-                var eq = v.v1.ToFullString () == v.v2.ToString ();
-                Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(eq ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
+                var textEqual = v.v1.ToFullString () == v.v2.ToString ();
+                Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(textEqual ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
                 return false;
             }
         )
