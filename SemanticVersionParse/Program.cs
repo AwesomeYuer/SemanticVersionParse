@@ -3,7 +3,8 @@ using NuGet.Versioning;
 using Semver;
 
 Console.WriteLine($"using {nameof(NuGet)}.{nameof(NuGet.Versioning)}");
-var query1 = new SemanticVersion[]
+
+new SemanticVersion[]
 {
       NuGetVersion.Parse("1.0.2")
     , NuGetVersion.Parse("1.0.1")
@@ -28,15 +29,18 @@ var query1 = new SemanticVersion[]
         {
             return x;
         }
+    )
+.ForEach
+    (
+        (i, x) =>
+        {
+            Console.WriteLine($"({i}): {x}");
+            return false;
+        }
     );
 
-foreach (var x in query1)
-{
-    Console.WriteLine(x);
-}
-
 Console.WriteLine($"using {nameof(Semver)}");
-var query2 = new SemVersion[]
+new SemVersion[]
 {
       SemVersion.Parse("1.0.2" ,SemVersionStyles.Any)
     , SemVersion.Parse("1.0.1" ,SemVersionStyles.Any)
@@ -62,12 +66,32 @@ var query2 = new SemVersion[]
         {
             return x;
         }
+    )
+.ForEach
+    (
+        (i, x) =>
+        {
+            Console.WriteLine($"({i}): {x}");
+            return false;
+        }
     );
-
-foreach (var x in query1)
-{
-    Console.WriteLine(x);
-}
 
 Console.WriteLine("Hello, World!");
 Console.ReadLine();
+
+
+public static class LinqHelper
+{
+    public static void ForEach<T>(this IEnumerable<T> @this, Func<int, T, bool> processFunc)
+    {
+        var i = 0;
+        foreach (T x in @this)
+        {
+            i ++;
+            if (processFunc(i, x))
+            {
+                break;
+            }
+        }
+    }
+}
