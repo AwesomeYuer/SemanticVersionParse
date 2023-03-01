@@ -2,27 +2,32 @@
 using NuGet.Versioning;
 using Semver;
 
-Console.WriteLine($"using {nameof(NuGet)}.{nameof(NuGet.Versioning)}");
+Console.WriteLine($"using {nameof(NuGet)}.{nameof(NuGet.Versioning)}.{nameof(SemanticVersion)} and {nameof(Semver)}.{nameof(SemVersion)}");
 
-new SemanticVersion[]
+var versions = new string[]
 {
-      NuGetVersion.Parse("1.0.2")
-    , NuGetVersion.Parse("1.0.1")
-    , NuGetVersion.Parse("1.0.4")
-    , NuGetVersion.Parse("1.0.4-ztm.1")
-    , NuGetVersion.Parse("1.0.4-ztm8")
-    , NuGetVersion.Parse("1.0.4-ztm40")
-    , NuGetVersion.Parse("1.0.4-ztm.40")
-    , NuGetVersion.Parse("1.0.4-ztm.8")
-    , NuGetVersion.Parse("1.0.4-ztm")
-    , NuGetVersion.Parse("1.0.4-Atm4")
-    , NuGetVersion.Parse("1.0.4-Atm")
-    , NuGetVersion.Parse("1.0.4-pre-release")
-    , NuGetVersion.Parse("1.0.4-preview3.4.243")
-    , NuGetVersion.Parse("1.0.4-preview2.4.243")
-    , NuGetVersion.Parse("1.0.4-beta.4.243")
-    , NuGetVersion.Parse("1.0.1-alpha.4.243")
-}
+    "1.0.2"
+    , "1.0.1"
+    , "1.0.4"
+    , "1.0.4-ztm.1"
+    , "1.0.4-ztm8"
+    , "1.0.4-ztm40"
+    , "1.0.4-ztm.40"
+    , "1.0.4-ztm.8"
+    , "1.0.4-ztm"
+    , "1.0.4-Atm4"
+    , "1.0.4-Atm"
+    , "1.0.4-pre-release"
+    , "1.0.4-preview3.4.243"
+    , "1.0.4-preview2.4.243"
+    , "1.0.4-beta.4.243"
+    , "1.0.1-alpha.4.243"
+};
+
+
+versions
+.Select
+    (v => (SemanticVersion) NuGetVersion.Parse(v))
 .OrderBy
     (
         (x) =>
@@ -30,55 +35,36 @@ new SemanticVersion[]
             return x;
         }
     )
-.ForEach
+.Zip
     (
-        (i, x) =>
-        {
-            Console.WriteLine($"({i}): {x}");
-            return false;
-        }
-    );
-
-Console.WriteLine($"using {nameof(Semver)}");
-new SemVersion[]
-{
-      SemVersion.Parse("1.0.2" ,SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.1" ,SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm.1", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm8", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm40", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm.40", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm.8", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-ztm", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-Atm3", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-Atm", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-pre-release", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-preview3.4.243", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-preview2.4.243", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.4-beta.4.243", SemVersionStyles.Any)
-    , SemVersion.Parse("1.0.1-alpha.4.243", SemVersionStyles.Any)
-
-}
-.OrderBy
-    (
-        (x) =>
-        {
-            return x;
-        }
+        versions
+            .Select
+                (v => SemVersion.Parse(v, SemVersionStyles.Any))
+            .OrderBy
+                (
+                    (x) =>
+                    {
+                        return x;
+                    }
+                )
+        , (v1, v2) =>
+            {
+                return (v1, v2);
+            }
     )
 .ForEach
     (
-        (i, x) =>
+        (i, v) =>
         {
-            Console.WriteLine($"({i}): {x}");
+            
+            var eq = v.v1.ToFullString () == v.v2.ToString ();
+            Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(eq ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
             return false;
         }
-    );
+    )
+;
 
-Console.WriteLine("Hello, World!");
 Console.ReadLine();
-
 
 public static class LinqHelper
 {
