@@ -66,13 +66,13 @@ Console.ReadLine();
 
 public static class LinqHelper
 {
-    public static void ForEach<T>(this IEnumerable<T> @this, Func<int, T, bool> processFunc)
+    public static void ForEach<T>(this IEnumerable<T> @this, Func<int, T, bool> eachProcessFunc)
     {
         var i = 0;
         foreach (T x in @this)
         {
             i ++;
-            if (processFunc(i, x))
+            if (eachProcessFunc(i, x))
             {
                 break;
             }
