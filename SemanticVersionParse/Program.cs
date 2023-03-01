@@ -24,7 +24,6 @@ var versions = new string[]
     , "1.0.1-alpha.4.243"
 };
 
-
 versions
     .Select
         (v => (SemanticVersion) NuGetVersion.Parse(v))
