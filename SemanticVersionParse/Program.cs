@@ -7,7 +7,6 @@ Console.WriteLine($"using {nameof(NuGet)}.{nameof(NuGet.Versioning)}.{nameof(Sem
 var versions = new string[]
 {
     "1.0.2"
-    , "1.0.1"
     , "1.0.4"
     , "1.0.4-ztm.1"
     , "1.0.4-ztm8"
@@ -22,6 +21,7 @@ var versions = new string[]
     , "1.0.4-preview2.4.243"
     , "1.0.4-beta.4.243"
     , "1.0.1-alpha.4.243"
+    , "1.0.1"
 };
 
 versions
@@ -56,7 +56,15 @@ versions
             (i, v) =>
             {
                 var textEqual = v.v1.ToFullString () == v.v2.ToString ();
+                if (!textEqual)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
                 Console.WriteLine($@"({i}): {nameof(SemanticVersion)}:""{v.v1}"" {(textEqual ? "==" : "!=")} {nameof(SemVersion)}:""{v.v2}""");
+                if (!textEqual)
+                {
+                    Console.ResetColor();
+                }
                 return false;
             }
         )
